@@ -21,7 +21,6 @@
     "onLanguage:javascript",
     "onLanguage:typescript"
   ],
-  "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#00c864",
     "theme": "dark"

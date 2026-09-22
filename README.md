@@ -1,6 +1,5 @@
 <div align="center">
     <h1>Live LLM Token Counter</h1>
-    <img src="images/icon.png" alt="Live LLM Token Counter logo" width="300" height="300"><br>
     <a href="https://marketplace.visualstudio.com/items?itemName=bedirt.gpt-token-counter-live"><img src="https://img.shields.io/badge/VSCode-v1.6.1-blue?style=flat&logo=visualstudiocode" alt="VS Code Marketplace version"></a>
     <a href="https://open-vsx.org/extension/bedirt/gpt-token-counter-live"><img alt="Open VSX version" src="https://img.shields.io/badge/OpenVSX%20-%20v1.6.1%20-%20%23bb3ec2?style=flat"></a>
     <br><br>
@@ -12,10 +11,6 @@ The extension identifier and settings namespace are `gpt-token-counter-live` so 
 
 Tokenizer support is provided by [tiktoken](https://www.npmjs.com/package/tiktoken) for GPT/OpenAI models, [Anthropic's tokenizer](https://github.com/anthropics/anthropic-tokenizer-typescript) for Claude, a local Gemini approximation, and [@huggingface/tokenizers](https://www.npmjs.com/package/@huggingface/tokenizers) for HuggingFace `tokenizer.json` files such as Qwen, Llama, and Mistral.
 
-<div align="center">
-    <img src="images/hero.gif" alt="Live LLM Token Counter in action" width="800">
-</div>
-
 ## Features
 
 ### Real-Time Token Counting
@@ -23,10 +18,6 @@ Live token counting for the current selection or entire document, displayed dire
 
 ### Multi-Model Family Support
 Click the status bar to switch between model families: GPT (OpenAI), Claude (Anthropic), Gemini (Google AI), or HuggingFace.
-
-<div align="center">
-    <img src="images/model_picker.gif" alt="Model family selection" width="800">
-</div>
 
 - **GPT (OpenAI):** Uses tiktoken `encoding_for_model('gpt-5')` with fallbacks to `o200k_base` → `cl100k_base` for accurate token counting across all GPT models.
 - **Claude (Anthropic):** Uses Anthropic's official tokenizer for precise token boundaries with full highlighting support.
@@ -36,10 +27,6 @@ Click the status bar to switch between model families: GPT (OpenAI), Claude (Ant
 ### Visual Token Highlighting
 See your tokens in real-time with rotating color bands that show exactly where each token begins and ends. Available for GPT, Claude, and HuggingFace byte-level BPE tokenizers (Qwen, Llama, Mistral, etc.).
 
-<div align="center">
-    <img src="images/highlight_on_off.gif" alt="Token highlighting toggle" width="800">
-</div>
-
 **Key features:**
 - **Toggle on/off:** Click the palette icon in the status bar to enable or disable highlighting.
 - **Smart text contrast:** Highlight text automatically adapts to the visible color against the active editor theme; fully transparent highlights preserve the editor's existing text colors.
@@ -48,10 +35,6 @@ See your tokens in real-time with rotating color bands that show exactly where e
 
 ### Customizable Highlight Colors
 Open the **Command Palette** and run `Configure Token Highlight Colors` to customize the rotating token color palette.
-
-<div align="center">
-    <img src="images/highlight_config.gif" alt="Token highlight configurator" width="800">
-</div>
 
 **Features:**
 - Add, remove, and reorder palette colors
@@ -64,10 +47,6 @@ Open the **Command Palette** and run `Configure Token Highlight Colors` to custo
 
 ### Customizable Status Bar Display
 Personalize how token information appears in your status bar using template placeholders.
-
-<div align="center">
-    <img src="images/status_bar_template.gif" alt="Status bar template customization" width="800">
-</div>
 
 **Supported placeholders:**
 - `{count}` - Token count
