@@ -2,6 +2,12 @@
 
 All notable changes to the "gpt-token-counter" extension will be documented in this file.
 
+## [1.7.0]
+
+### Added
+- `gpt-token-counter-live.anthropicTokenMultiplier` setting to correct the Claude token count for newer Claude models. The bundled Claude tokenizer is the older Claude 2 tokenizer, which undercounts for current models.
+- The multiplied count is rounded up. The default `1` shows the raw count, and other model families are not affected.
+
 ## [1.6.1]
 
 ### Changed

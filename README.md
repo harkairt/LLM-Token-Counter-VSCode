@@ -88,6 +88,11 @@ This extension contributes the following settings:
   - Default: `[]` (empty array shows for all files)
   - Example: `["*.md", "*.mdc"]` shows only for markdown files
 
+- **`gpt-token-counter-live.anthropicTokenMultiplier`**: Multiplier for the Claude token count. Use it to correct the count for newer Claude models. Other model families are not affected.
+  - Default: `1` (shows the raw count)
+  - The result is rounded up to the next whole token.
+  - Example: `1.2` shows 120 tokens for a raw count of 100
+
 ### HuggingFace Tokenizers
 
 Select `HuggingFace (huggingface)` in the model family picker, then point the extension at a tokenizer with either of the settings below. The first load fetches `tokenizer.json` from the Hub and caches it under the extension's global storage directory, so subsequent launches are offline-friendly.

@@ -218,6 +218,33 @@ suite('File Pattern Matching', () => {
 	});
 });
 
+suite('Token Multiplier', () => {
+	const { applyTokenMultiplier, sanitizeMultiplierSetting } = extension._test;
+
+	test('Multiplier of 1 returns the raw count', () => {
+		assert.strictEqual(applyTokenMultiplier(123, 1), 123);
+	});
+
+	test('Multiplied count is rounded up', () => {
+		assert.strictEqual(applyTokenMultiplier(101, 1.15), 117);
+	});
+
+	test('Floating-point noise does not bump the count', () => {
+		assert.strictEqual(applyTokenMultiplier(100, 1.1), 110);
+	});
+
+	test('Zero count stays zero', () => {
+		assert.strictEqual(applyTokenMultiplier(0, 1.5), 0);
+	});
+
+	test('Invalid multiplier settings fall back to 1', () => {
+		for (const value of [0, -1, NaN, Infinity, '1.2', undefined]) {
+			assert.strictEqual(sanitizeMultiplierSetting(value), 1);
+		}
+		assert.strictEqual(sanitizeMultiplierSetting(1.2), 1.2);
+	});
+});
+
 suite('HuggingFace Tokenizer', () => {
 	const {
 		deriveHfSafeId,

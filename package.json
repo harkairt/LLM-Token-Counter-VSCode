@@ -2,7 +2,7 @@
   "name": "gpt-token-counter-live",
   "displayName": "Live LLM Token Counter",
   "description": "Live token counts and token-boundary highlighting for GPT, Claude, Gemini, and HuggingFace tokenizers.",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "publisher": "bedirt",
   "author": {
     "name": "BedirT"
@@ -109,6 +109,12 @@
           },
           "default": [],
           "markdownDescription": "Glob patterns for files where the status bar should be shown (e.g., `[\"*.md\", \"*.mdc\"]`). Empty array shows for all files."
+        },
+        "gpt-token-counter-live.anthropicTokenMultiplier": {
+          "type": "number",
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "markdownDescription": "Multiplier for the Claude token count. The result is rounded up. Use it to correct the count for newer Claude models. The default `1` shows the raw count. Other model families are not affected."
         },
         "gpt-token-counter-live.huggingfaceModelId": {
           "type": "string",

@@ -201,6 +201,21 @@ function sanitizeTemplateSetting(value, fallback) {
     return sanitized;
 }
 
+function sanitizeMultiplierSetting(value) {
+    if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+        return value;
+    }
+    return 1;
+}
+
+function applyTokenMultiplier(count, multiplier) {
+    if (multiplier === 1) {
+        return count;
+    }
+    // Round away float noise first: 100 * 1.1 === 110.00000000000001, which would ceil to 111.
+    return Math.ceil(Number((count * multiplier).toFixed(6)));
+}
+
 function sanitizeProviderSetting(value) {
     if (typeof value === 'string') {
         const normalized = value.trim().toLowerCase();
@@ -334,6 +349,7 @@ function resolveOriginalOffsetFromNormalized(offsetMap, normalizedOffset, direct
 let highlightColors = DEFAULT_HIGHLIGHT_COLORS.slice();
 
 let statusBarTemplate = DEFAULT_STATUS_TEMPLATE;
+let anthropicTokenMultiplier = 1;
 let enabledFilePatterns = [];
 
 function loadHighlightColors(context) {
@@ -375,6 +391,11 @@ function loadHighlightColors(context) {
 function loadStatusBarConfig() {
     const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
     statusBarTemplate = sanitizeTemplateSetting(config.get('statusBarDisplayTemplate'), DEFAULT_STATUS_TEMPLATE);
+}
+
+function loadTokenMultiplierConfig() {
+    const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
+    anthropicTokenMultiplier = sanitizeMultiplierSetting(config.get('anthropicTokenMultiplier'));
 }
 
 function normalizeEnabledFilePatterns(patterns) {
@@ -726,6 +747,7 @@ function activate(context) {
 
     loadHighlightColors(context);
     loadStatusBarConfig();
+    loadTokenMultiplierConfig();
     loadEnabledFilePatterns();
 
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -1368,9 +1390,12 @@ function activate(context) {
         const baseOffset = selection.isEmpty ? 0 : document.offsetAt(selection.start);
 
         const { tokenCount, tokenizationResult } = computeTokenization(text);
+        const displayCount = currentProvider === 'anthropic'
+            ? applyTokenMultiplier(tokenCount, anthropicTokenMultiplier)
+            : tokenCount;
 
         statusBar.text = applyStatusBarTemplate(statusBarTemplate, {
-            count: tokenCount,
+            count: displayCount,
             family: currentFamilyName,
             provider: currentProvider
         });
@@ -1406,6 +1431,11 @@ function activate(context) {
     vscode.workspace.onDidChangeConfiguration(event => {
         if (event.affectsConfiguration(`${CONFIG_SECTION}.statusBarDisplayTemplate`)) {
             loadStatusBarConfig();
+            scheduleUpdateTokenCount();
+        }
+
+        if (event.affectsConfiguration(`${CONFIG_SECTION}.anthropicTokenMultiplier`)) {
+            loadTokenMultiplierConfig();
             scheduleUpdateTokenCount();
         }
 
@@ -1903,6 +1933,8 @@ module.exports = {
         normalizeEnabledFilePatterns,
         setEnabledFilePatterns: (patterns) => {
             enabledFilePatterns = normalizeEnabledFilePatterns(patterns);
-        }
+        },
+        sanitizeMultiplierSetting,
+        applyTokenMultiplier
     }
 };
